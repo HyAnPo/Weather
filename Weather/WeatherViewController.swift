@@ -10,9 +10,7 @@ import Foundation
 import UIKit
 
 class WeatherViewController: UIViewController, UISearchBarDelegate {
-    
-    
- 
+  
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var tempLabel: UILabel!
