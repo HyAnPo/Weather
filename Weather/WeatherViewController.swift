@@ -9,9 +9,10 @@
 import Foundation
 import UIKit
 
-class WeatherViewController: UIViewController {
+class WeatherViewController: UIViewController, UISearchBarDelegate {
     
-    @IBOutlet weak var searchBar: UITextField!
+    
+ 
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var tempLabel: UILabel!
@@ -19,7 +20,30 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var skyConditionLabel: UILabel!
     
     
-}
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        
+        if let searchText = searchBar.text {
+        WeatherController.searchNewCity(searchText) { (result) in
+            guard let weatherResult = result else {return}
+            
+            dispatch_async(dispatch_get_main_queue()) { () in
+                self.cityLabel.text = weatherResult.cityName
+                
+                if let temperatureC = weatherResult.tempC {
+                    self.tempLabel.text = "\(temperatureC) °C"
+                } else {
+                    self.tempLabel.text = "No temp available"
+                }
+                
+                self.conditionsLabel.text = weatherResult.main
+                self.skyConditionLabel.text = weatherResult.description
+                }
+              }
+            }
+            searchBar.resignFirstResponder()
+        }
+    }
+
 
 
 

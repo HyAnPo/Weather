@@ -10,9 +10,8 @@ import Foundation
 
 class WeatherController {
     
-    static let sharedInstance = WeatherController()
     
-    func searchNewCity(city: String, completion: (result: Weather?) -> Void) {
+    static func searchNewCity(city: String, completion: (result: Weather?) -> Void) {
         let url = NetworkController.searchURL(city)
         
         NetworkController.dataAtURL(url) { (resultData) -> Void in
