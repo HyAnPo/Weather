@@ -10,21 +10,24 @@ import Foundation
 
 class NetworkController {
     
-    static let baseURLString = "http://api.openweathermap.org/data/2.5/weather?q="
-    static let apiKey = "&APPID=7b0fdfeb00e59a43d9edd549236aa6c8"
+    static let baseURLString = "http://api.openweathermap.org/data/2.5/weather"
+    static let apiKey = "dc1d2b325aae747305b697f0159d6857"
     
     static func searchURL(cityName: String) -> NSURL {
-        let searchString = baseURLString + cityName + apiKey
+        let escapedCityString = cityName.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet())
         
-        return NSURL(string: searchString)!
+        return NSURL(string: baseURLString + "?q=\(escapedCityString!)" + "&appid=\(apiKey)")!
     }
     
     static func dataAtURL(url: NSURL, completion: (resultData: NSData?) -> Void) {
         let session = NSURLSession.sharedSession()
         
         let dataTask = session.dataTaskWithURL(url) { (data, _, error) -> Void in
-            if let error = error {
-                print(error.localizedDescription)
+            
+            guard let data = data else {
+                print(error?.localizedDescription)
+                completion(resultData: nil)
+                return
             }
             completion(resultData: data)
         }
